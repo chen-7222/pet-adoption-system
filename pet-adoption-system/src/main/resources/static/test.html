@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 寵物領養系統 - 完整測試頁面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        /* 標題區 */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        /* 主功能區 */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .card h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 1.4rem;
+        }
+        
+        /* 按鈕樣式 */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+        
+        /* 表單樣式 */
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* 表格樣式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .data-table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .data-table .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        /* 結果顯示區 */
+        .result-section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid #ddd;
+            margin-top: 30px;
+        }
+        
+        .result-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .result-content {
+            max-height: 600px;
+            overflow-y: auto;
+            background: #1a1a1a;
+            color: #f8f8f8;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* 模態視窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-btn {
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .close-btn:hover {
+            color: #e74c3c;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+        
+        /* 載入動畫 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 狀態標籤 */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-available { background: #d4edda; color: #155724; }
+        .status-adopted { background: #f8d7da; color: #721c24; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-medical { background: #cce5ff; color: #004085; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 標題區 -->
+        <div class="header">
+            <h1>🐾 寵物領養系統 - 完整測試頁面</h1>
+            <p class="subtitle">Service A: 寵物管理 | Service B: 領養管理 | 📸 照片管理 | 完整 API 操作介面</p>
+            <div style="margin-top: 15px;">
+                <span>系統狀態: </span>
+                <span id="systemStatus" style="color: #e74c3c;">🔴 檢查中...</span>
+            </div>
+        </div>
+
+        <!-- 主功能區 -->
+        <div class="dashboard">
+            <!-- Service A: 寵物管理 -->
+            <div class="card">
+                <h2>📋 Service A: 寵物管理 (CRUD)</h2>
+                
+                <!-- 主要操作按鈕 -->
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="loadAllPets()">
+                        <span>🔍</span> 查詢所有寵物
+                    </button>
+                    <button class="btn btn-success" onclick="showAddPetForm()">
+                        <span>➕</span> 新增寵物
+                    </button>
+                    <button class="btn btn-info" onclick="showSearchForm()">
+                        <span>🎯</span> 條件查詢
+                    </button>
+                </div>
+                
+                <!-- 新增寵物表單 -->
+                <div id="addPetForm" class="form-section">
+                    <h3>新增寵物</h3>
+                    <div class="form-group">
+                        <label>寵物名稱 *</label>
+                        <input type="text" id="petName" class="form-control" placeholder="例如: 小黑" value="測試寵物">
+                    </div>
+                    <div class="form-group">
+                        <label>物種 *</label>
+                        <select id="petSpecies" class="form-control">
+                            <option value="狗">狗 🐶</option>
+                            <option value="貓">貓 🐱</option>
+                            <option value="兔子">兔子 🐰</option>
+                            <option value="鳥">鳥 🐦</option>
+                            <option value="鼠">鼠 🐭</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>品種</label>
+                        <input type="text" id="petBreed" class="form-control" placeholder="例如: 米克斯" value="測試品種">
+                    </div>
+                    <div class="form-group">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label>年齡 *</label>
+                                <input type="number" id="petAge" class="form-control" value="2" min="0" max="30">
+                            </div>
+                            <div>
+                                <label>性別</label>
+                                <select id="petGender" class="form-control">
+                                    <option value="公">公</option>
+                                    <option value="母">母</option>
+                                    <option value="未知">未知</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>狀態</label>
+                        <select id="petStatus" class="form-control">
+                            <option value="待領養">待領養</option>
+                            <option value="已領養">已領養</option>
+                            <option value="醫療中">醫療中</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea id="petDescription" class="form-control" rows="3" placeholder="寵物描述...">溫馴可愛，適合家庭領養</textarea>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="createPet()">
+                            <span>💾</span> 新增寵物
+                        </button>
+                        <button class="btn btn-danger" onclick="hideForm('addPetForm')">
+                            <span>❌</span> 取消
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 條件查詢表單 -->
+                <div id="searchPetForm" class="form-section">
+                    <h3>條件查詢寵物</h3>
+                    <div class="form-group">
+                        <label>查詢類型</label>
+                        <select id="searchType" class="form-control" onchange="toggleSearchFields()">
+                            <option value="species">依物種查詢</option>
+                            <option value="status">依狀態查詢</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="speciesSearch">
+                        <label>物種</label>
+                        <select id="searchSpecies" class="form-control">
+                            <option value="">所有物種</option>
+                            <option value="狗">狗</option>
+                            <option value="貓">貓</option>
+                            <option value="兔子">兔子</option>
+                            <option value="鳥">鳥</option>
+                            <option value="鼠">鼠</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="statusSearch" style="display:none;">
+                        <label>狀態</label>
+                        <select id="searchStatus" class="form-control">
+                            <option value="">所有狀態</option>
+                            <option value="待領養">待領養</option>
+                            <option value="已領養">已領養</option>
+                            <option value="醫療中">醫療中</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="searchPets()">
+                            <span>🔍</span> 開始查詢
+                        </button>
+                        <button class="btn btn-danger" onclick="hideForm('searchPetForm')">
+                            <span>❌</span> 取消
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 寵物列表 -->
+                <div id="petsList" style="display: none; margin-top: 20px;">
+                    <h3>寵物列表</h3>
+                    <table class="data-table" id="petsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>名稱</th>
+                                <th>物種</th>
+                                <th>品種</th>
+                                <th>年齡</th>
+                                <th>狀態</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="petsTableBody">
+                            <!-- 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Service B: 領養管理 -->
+            <div class="card">
+                <h2>📝 Service B: 領養管理 (CRUD)</h2>
+                
+                <!-- 主要操作按鈕 -->
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="loadAllAdoptions()">
+                        <span>📋</span> 所有申請
+                    </button>
+                    <button class="btn btn-success" onclick="showSubmitAdoptionForm()">
+                        <span>📄</span> 提交申請
+                    </button>
+                    <button class="btn btn-warning" onclick="showUpdateStatusForm()">
+                        <span>🔄</span> 更新狀態
+                    </button>
+                </div>
+                
+                <!-- 提交申請表單 -->
+                <div id="submitAdoptionForm" class="form-section">
+                    <h3>提交領養申請</h3>
+                    <div class="form-group">
+                        <label>選擇寵物 *</label>
+                        <select id="selectPet" class="form-control">
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>申請人姓名 *</label>
+                        <input type="text" id="applicantName" class="form-control" placeholder="請輸入姓名" value="張小明">
+                    </div>
+                    <div class="form-group">
+                        <label>聯絡電話 *</label>
+                        <input type="text" id="contactInfo" class="form-control" placeholder="例如: 0912-345678" value="0912-345678">
+                    </div>
+                    <div class="form-group">
+                        <label>備註說明</label>
+                        <textarea id="adoptionNotes" class="form-control" rows="2" placeholder="申請相關說明...">希望領養寵物陪伴家人</textarea>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="createAdoption()">
+                            <span>📤</span> 提交申請
+                        </button>
+                        <button class="btn btn-danger" onclick="hideForm('submitAdoptionForm')">
+                            <span>❌</span> 取消
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 更新狀態表單 -->
+                <div id="updateStatusForm" class="form-section">
+                    <h3>更新申請狀態</h3>
+                    <div class="form-group">
+                        <label>選擇申請 *</label>
+                        <select id="selectAdoption" class="form-control">
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>新狀態 *</label>
+                        <select id="newStatus" class="form-control">
+                            <option value="待審核">待審核 ⏳</option>
+                            <option value="完成領養">完成領養 ✅</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-warning" onclick="updateAdoptionStatus()">
+                            <span>🔄</span> 更新狀態
+                        </button>
+                        <button class="btn btn-danger" onclick="hideForm('updateStatusForm')">
+                            <span>❌</span> 取消
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 領養申請列表 -->
+                <div id="adoptionsList" style="display: none; margin-top: 20px;">
+                    <h3>領養申請列表</h3>
+                    <table class="data-table" id="adoptionsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>申請人</th>
+                                <th>寵物ID</th>
+                                <th>狀態</th>
+                                <th>申請日期</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adoptionsTableBody">
+                            <!-- 動態載入 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 照片管理 -->
+            <div class="card">
+                <h2>📸 寵物照片管理 (File I/O)</h2>
+                
+                <div class="btn-group">
+                    <button class="btn btn-info" onclick="showPhotoUploadForm()">
+                        <span>📤</span> 上傳照片
+                    </button>
+                    <button class="btn btn-warning" onclick="showPhotoManagement()">
+                        <span>🖼️</span> 管理照片
+                    </button>
+                </div>
+                
+                <!-- 上傳照片表單 -->
+                <div id="photoUploadForm" class="form-section">
+                    <h3>上傳寵物照片</h3>
+                    <div class="form-group">
+                        <label>選擇寵物</label>
+                        <select id="selectPetForPhoto" class="form-control">
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>選擇照片檔案</label>
+                        <input type="file" id="photoFile" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp">
+                        <small style="color: #666;">支援格式: JPG, PNG, GIF, WebP (最大 5MB)</small>
+                    </div>
+                    <div class="form-group">
+                        <label>預覽</label>
+                        <div id="photoPreview" style="margin-top: 10px; display: none;">
+                            <img id="previewImage" src="#" alt="預覽" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="uploadPetPhoto()">
+                            <span>📤</span> 上傳照片
+                        </button>
+                        <button class="btn btn-danger" onclick="hideForm('photoUploadForm')">
+                            <span>❌</span> 取消
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 照片管理區 -->
+                <div id="photoManagement" class="form-section">
+                    <h3>寵物照片管理</h3>
+                    <div class="form-group">
+                        <label>選擇寵物查看照片</label>
+                        <select id="selectPetForManage" class="form-control" onchange="loadPetPhoto()">
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+                    <div id="photoInfo" style="margin-top: 15px; display: none;">
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                            <h4>照片資訊</h4>
+                            <div id="photoDetails"></div>
+                            <div style="margin-top: 10px;" id="photoActions"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 結果顯示區 -->
+        <div class="result-section">
+            <h3>📊 API 執行結果</h3>
+            <div class="result-content" id="result">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>系統準備就緒，請點擊上方按鈕開始測試</p>
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-danger" onclick="clearResults()">
+                    <span>🗑️</span> 清除結果
+                </button>
+                <button class="btn btn-success" onclick="runCompleteCRUDTest()">
+                    <span>🚀</span> 執行完整測試
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 編輯寵物模態視窗 -->
+    <div class="modal" id="editPetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>編輯寵物</h3>
+                <span class="close-btn" onclick="closeModal('editPetModal')">×</span>
+            </div>
+            <div id="editPetFormContent">
+                <!-- 動態載入編輯表單 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全域變數
+        const API_BASE = 'http://localhost:8080/api';
+        let currentPets = [];
+        let currentAdoptions = [];
+        
+        // ========== 初始化 ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSystemStatus();
+        });
+        
+        async function checkSystemStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/pets`);
+                if (response.ok) {
+                    document.getElementById('systemStatus').textContent = '🟢 系統正常';
+                    document.getElementById('systemStatus').style.color = '#27ae60';
+                }
+            } catch (error) {
+                document.getElementById('systemStatus').textContent = '🔴 無法連線到 API';
+            }
+        }
+        
+        // ========== Service A: 寵物管理 CRUD ==========
+        
+        // CREATE: 新增寵物
+        async function createPet() {
+            const petData = {
+                name: document.getElementById('petName').value.trim(),
+                species: document.getElementById('petSpecies').value,
+                breed: document.getElementById('petBreed').value.trim(),
+                age: parseInt(document.getElementById('petAge').value),
+                gender: document.getElementById('petGender').value,
+                status: document.getElementById('petStatus').value,
+                description: document.getElementById('petDescription').value.trim()
+            };
+            
+            if (!petData.name || !petData.species) {
+                showResult('❌ 請填寫寵物名稱和物種', 'error');
+                return;
+            }
+            
+            showLoading('正在新增寵物...');
+            try {
+                const response = await fetch(`${API_BASE}/pets`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(petData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ 新增寵物成功: ID=${data.id}`, 'success', data);
+                    hideForm('addPetForm');
+                    loadAllPets();
+                } else {
+                    showResult(`❌ 新增失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // READ: 查詢所有寵物
+        async function loadAllPets() {
+            showLoading('正在查詢所有寵物...');
+            try {
+                const response = await fetch(`${API_BASE}/pets`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                currentPets = data;
+                
+                showResult(`✅ 找到 ${data.length} 隻寵物`, 'success');
+                displayPetsTable(data);
+                document.getElementById('petsList').style.display = 'block';
+            } catch (error) {
+                showResult(`❌ 查詢失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        // READ: 條件查詢
+        function toggleSearchFields() {
+            const type = document.getElementById('searchType').value;
+            document.getElementById('speciesSearch').style.display = type === 'species' ? 'block' : 'none';
+            document.getElementById('statusSearch').style.display = type === 'status' ? 'block' : 'none';
+        }
+        
+        async function searchPets() {
+            const type = document.getElementById('searchType').value;
+            
+            showLoading('正在查詢...');
+            try {
+                let data;
+                
+                if (type === 'species') {
+                    const species = document.getElementById('searchSpecies').value;
+                    if (species) {
+                        // 使用 API 查詢
+                        const response = await fetch(`${API_BASE}/pets/species/${encodeURIComponent(species)}`);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        data = await response.json();
+                        showResult(`✅ 找到 ${data.length} 隻${species}`, 'success');
+                    } else {
+                        // 空白則查詢全部
+                        const response = await fetch(`${API_BASE}/pets`);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        data = await response.json();
+                        showResult(`✅ 找到 ${data.length} 隻寵物`, 'success');
+                    }
+                } else {
+                    const status = document.getElementById('searchStatus').value;
+                    if (status) {
+                        // 使用 API 查詢狀態
+                        const response = await fetch(`${API_BASE}/pets/status/${encodeURIComponent(status)}`);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        data = await response.json();
+                        showResult(`✅ 找到 ${data.length} 隻${status}的寵物`, 'success');
+                    } else {
+                        // 空白則查詢全部
+                        const response = await fetch(`${API_BASE}/pets`);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        data = await response.json();
+                        showResult(`✅ 找到 ${data.length} 隻寵物`, 'success');
+                    }
+                }
+                
+                displayPetsTable(data);
+                document.getElementById('petsList').style.display = 'block';
+            } catch (error) {
+                showResult(`❌ 查詢失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        // UPDATE: 顯示編輯表單
+        async function showEditPetForm(petId) {
+            showLoading('正在載入寵物資料...');
+            try {
+                const response = await fetch(`${API_BASE}/pets/${petId}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const pet = await response.json();
+                
+                const formContent = `
+                    <div class="form-group">
+                        <label>寵物名稱</label>
+                        <input type="text" id="editPetName" class="form-control" value="${pet.name}">
+                    </div>
+                    <div class="form-group">
+                        <label>物種</label>
+                        <select id="editPetSpecies" class="form-control">
+                            <option value="狗" ${pet.species === '狗' ? 'selected' : ''}>狗</option>
+                            <option value="貓" ${pet.species === '貓' ? 'selected' : ''}>貓</option>
+                            <option value="兔子" ${pet.species === '兔子' ? 'selected' : ''}>兔子</option>
+                            <option value="鳥" ${pet.species === '鳥' ? 'selected' : ''}>鳥</option>
+                            <option value="鼠" ${pet.species === '鼠' ? 'selected' : ''}>鼠</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>品種</label>
+                        <input type="text" id="editPetBreed" class="form-control" value="${pet.breed || ''}">
+                    </div>
+                    <div class="form-group">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label>年齡</label>
+                                <input type="number" id="editPetAge" class="form-control" value="${pet.age}">
+                            </div>
+                            <div>
+                                <label>性別</label>
+                                <select id="editPetGender" class="form-control">
+                                    <option value="公" ${pet.gender === '公' ? 'selected' : ''}>公</option>
+                                    <option value="母" ${pet.gender === '母' ? 'selected' : ''}>母</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>狀態</label>
+                        <select id="editPetStatus" class="form-control">
+                            <option value="待領養" ${pet.status === '待領養' ? 'selected' : ''}>待領養</option>
+                            <option value="已領養" ${pet.status === '已領養' ? 'selected' : ''}>已領養</option>
+                            <option value="醫療中" ${pet.status === '醫療中' ? 'selected' : ''}>醫療中</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea id="editPetDescription" class="form-control" rows="3">${pet.description || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ID (唯讀)</label>
+                        <input type="text" class="form-control" value="${pet.id}" readonly style="background: #f5f5f5;">
+                        <small style="color: #666;">ID 由系統自動產生，無法修改</small>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="updatePet(${petId})">
+                            <span>💾</span> 更新寵物
+                        </button>
+                        <button class="btn btn-danger" onclick="closeModal('editPetModal')">
+                            <span>❌</span> 取消
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('editPetFormContent').innerHTML = formContent;
+                document.getElementById('editPetModal').style.display = 'flex';
+                showResult(`載入寵物 ID=${petId} 的資料`, 'info');
+            } catch (error) {
+                showResult(`❌ 載入失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        // UPDATE: 更新寵物
+        async function updatePet(petId) {
+            const petData = {
+                name: document.getElementById('editPetName').value.trim(),
+                species: document.getElementById('editPetSpecies').value,
+                breed: document.getElementById('editPetBreed').value.trim(),
+                age: parseInt(document.getElementById('editPetAge').value),
+                gender: document.getElementById('editPetGender').value,
+                status: document.getElementById('editPetStatus').value,
+                description: document.getElementById('editPetDescription').value.trim()
+            };
+            
+            showLoading('正在更新寵物...');
+            try {
+                const response = await fetch(`${API_BASE}/pets/${petId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(petData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ 更新寵物成功: ID=${petId}`, 'success', data);
+                    closeModal('editPetModal');
+                    loadAllPets();
+                } else {
+                    showResult(`❌ 更新失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // DELETE: 刪除寵物
+        async function deletePet(petId) {
+            if (!confirm(`確定要刪除寵物 ID=${petId} 嗎？此操作無法復原！`)) return;
+            
+            showLoading('正在刪除寵物...');
+            try {
+                const response = await fetch(`${API_BASE}/pets/${petId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResult(`✅ 刪除寵物成功: ID=${petId}`, 'success');
+                    loadAllPets();
+                } else {
+                    const data = await response.json();
+                    showResult(`❌ 刪除失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // ========== Service B: 領養管理 CRUD ==========
+        
+        // CREATE: 提交領養申請
+        async function createAdoption() {
+            const petId = document.getElementById('selectPet').value;
+            const applicantName = document.getElementById('applicantName').value.trim();
+            const contactInfo = document.getElementById('contactInfo').value.trim();
+            const notes = document.getElementById('adoptionNotes').value.trim();
+            
+            if (!petId || !applicantName || !contactInfo) {
+                showResult('❌ 請填寫所有必填欄位', 'error');
+                return;
+            }
+            
+            const adoptionData = {
+                petId: parseInt(petId),
+                applicantName: applicantName,
+                contactInfo: contactInfo,
+                notes: notes || '透過測試頁面提交'
+            };
+            
+            showLoading('正在提交領養申請...');
+            try {
+                const response = await fetch(`${API_BASE}/adoptions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(adoptionData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ 領養申請成功: 申請編號=${data.id}`, 'success', data);
+                    hideForm('submitAdoptionForm');
+                    loadAllAdoptions();
+                } else {
+                    showResult(`❌ 申請失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // READ: 查詢所有領養申請
+        async function loadAllAdoptions() {
+            showLoading('正在查詢所有領養申請...');
+            try {
+                const response = await fetch(`${API_BASE}/adoptions`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                currentAdoptions = data;
+                
+                showResult(`✅ 找到 ${data.length} 筆申請`, 'success');
+                displayAdoptionsTable(data);
+                document.getElementById('adoptionsList').style.display = 'block';
+            } catch (error) {
+                showResult(`❌ 查詢失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        // UPDATE: 更新申請狀態
+        async function updateAdoptionStatus() {
+            const adoptionId = document.getElementById('selectAdoption').value;
+            const newStatus = document.getElementById('newStatus').value;
+            
+            if (!adoptionId) {
+                showResult('❌ 請選擇要更新的申請', 'error');
+                return;
+            }
+            
+            showLoading('正在更新申請狀態...');
+            try {
+                const response = await fetch(`${API_BASE}/adoptions/${adoptionId}/status?status=${encodeURIComponent(newStatus)}`, {
+                    method: 'PUT'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ 申請狀態更新成功: 新狀態=${newStatus}`, 'success', data);
+                    hideForm('updateStatusForm');
+                    loadAllAdoptions();
+                } else {
+                    showResult(`❌ 更新失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // DELETE: 刪除領養申請
+        async function deleteAdoption(adoptionId) {
+            if (!confirm(`確定要刪除領養申請 ID=${adoptionId} 嗎？此操作無法復原！`)) return;
+            
+            showLoading('正在刪除領養申請...');
+            try {
+                const response = await fetch(`${API_BASE}/adoptions/${adoptionId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showResult(`✅ 刪除申請成功: ID=${adoptionId}`, 'success');
+                    loadAllAdoptions();
+                } else {
+                    const data = await response.json();
+                    showResult(`❌ 刪除失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // ========== 照片管理功能 (File I/O) ==========
+        
+        function showPhotoUploadForm() {
+            hideAllForms();
+            loadPetsForPhotoSelect();
+            document.getElementById('photoUploadForm').style.display = 'block';
+            
+            // 檔案選擇預覽
+            document.getElementById('photoFile').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('previewImage');
+                        preview.src = e.target.result;
+                        document.getElementById('photoPreview').style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            showResult('請選擇寵物和照片檔案', 'info');
+        }
+        
+        function showPhotoManagement() {
+            hideAllForms();
+            loadPetsForManageSelect();
+            document.getElementById('photoManagement').style.display = 'block';
+            showResult('請選擇寵物查看照片', 'info');
+        }
+        
+        async function loadPetsForPhotoSelect() {
+            try {
+                const response = await fetch(`${API_BASE}/pets`);
+                const pets = await response.json();
+                
+                const select = document.getElementById('selectPetForPhoto');
+                select.innerHTML = '<option value="">-- 請選擇寵物 --</option>';
+                
+                pets.forEach(pet => {
+                    const option = document.createElement('option');
+                    option.value = pet.id;
+                    option.textContent = `${pet.name} (${pet.species}, ID: ${pet.id})`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                showResult(`載入寵物失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        async function loadPetsForManageSelect() {
+            try {
+                const response = await fetch(`${API_BASE}/pets`);
+                const pets = await response.json();
+                
+                const select = document.getElementById('selectPetForManage');
+                select.innerHTML = '<option value="">-- 請選擇寵物 --</option>';
+                
+                pets.forEach(pet => {
+                    const option = document.createElement('option');
+                    option.value = pet.id;
+                    option.textContent = `${pet.name} (${pet.species}, ID: ${pet.id})`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                showResult(`載入寵物失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        async function uploadPetPhoto() {
+            const petId = document.getElementById('selectPetForPhoto').value;
+            const fileInput = document.getElementById('photoFile');
+            const file = fileInput.files[0];
+            
+            if (!petId || !file) {
+                showResult('請選擇寵物和照片檔案', 'error');
+                return;
+            }
+            
+            // 檢查檔案大小 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showResult('檔案太大！最大允許 5MB', 'error');
+                return;
+            }
+            
+            // 檢查檔案類型
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                showResult('不支援的檔案類型！請使用 JPG、PNG、GIF 或 WebP', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            showLoading('正在上傳照片...');
+            try {
+                const response = await fetch(`${API_BASE}/pets/${petId}/upload-photo`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showResult('✅ 照片上傳成功！', 'success', result);
+                    // 清空表單
+                    fileInput.value = '';
+                    document.getElementById('photoPreview').style.display = 'none';
+                } else {
+                    showResult(`❌ 上傳失敗: ${result.message || '未知錯誤'}`, 'error', result);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        async function loadPetPhoto() {
+            const petId = document.getElementById('selectPetForManage').value;
+            if (!petId) return;
+            
+            showLoading('正在載入照片資訊...');
+            try {
+                // 取得寵物資訊
+                const petResponse = await fetch(`${API_BASE}/pets/${petId}`);
+                if (!petResponse.ok) {
+                    document.getElementById('photoInfo').style.display = 'none';
+                    showResult('找不到寵物資料', 'error');
+                    return;
+                }
+                
+                const pet = await petResponse.json();
+                
+                if (!pet.photoFilename) {
+                    document.getElementById('photoInfo').style.display = 'none';
+                    showResult('此寵物還沒有照片', 'info');
+                    return;
+                }
+                
+                // 顯示照片資訊
+                const photoDetails = document.getElementById('photoDetails');
+                photoDetails.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 150px 1fr; gap: 10px;">
+                        <div><strong>檔案名稱:</strong></div>
+                        <div>${pet.photoFilename}</div>
+                        
+                        <div><strong>檔案大小:</strong></div>
+                        <div>${(pet.photoSize / 1024).toFixed(2)} KB</div>
+                        
+                        <div><strong>檔案類型:</strong></div>
+                        <div>${pet.photoContentType || '未知'}</div>
+                        
+                        <div><strong>預覽:</strong></div>
+                        <div>
+                            <img src="${API_BASE}/pets/${petId}/photo" 
+                                 alt="寵物照片" 
+                                 style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </div>
+                `;
+                
+                // 顯示操作按鈕
+                const photoActions = document.getElementById('photoActions');
+                photoActions.innerHTML = `
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="viewFullPhoto(${petId})">
+                            <span>👁️</span> 查看完整照片
+                        </button>
+                        <button class="btn btn-danger" onclick="deletePetPhoto(${petId})">
+                            <span>🗑️</span> 刪除照片
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('photoInfo').style.display = 'block';
+                showResult(`已載入寵物 ${pet.name} 的照片資訊`, 'success');
+                
+            } catch (error) {
+                showResult(`載入失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        function viewFullPhoto(petId) {
+            window.open(`${API_BASE}/pets/${petId}/photo`, '_blank');
+        }
+        
+        async function deletePetPhoto(petId) {
+            if (!confirm('確定要刪除這張照片嗎？')) return;
+            
+            showLoading('正在刪除照片...');
+            try {
+                const response = await fetch(`${API_BASE}/pets/${petId}/photo`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showResult('✅ 照片刪除成功！', 'success', result);
+                    // 重新載入
+                    loadPetPhoto();
+                } else {
+                    showResult('❌ 刪除失敗', 'error');
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        // ========== 輔助函數 ==========
+        
+        function showAddPetForm() {
+            hideAllForms();
+            hideAllLists();
+            document.getElementById('addPetForm').style.display = 'block';
+            showResult('請填寫寵物資訊以新增寵物', 'info');
+        }
+        
+        function showSearchForm() {
+            hideAllForms();
+            hideAllLists();
+            document.getElementById('searchPetForm').style.display = 'block';
+            showResult('請選擇查詢條件', 'info');
+        }
+        
+        async function showSubmitAdoptionForm() {
+            hideAllForms();
+            hideAllLists();
+            
+            try {
+                const response = await fetch(`${API_BASE}/pets`);
+                const pets = await response.json();
+                
+                // 過濾出待領養的寵物（所有物種）
+                const availablePets = pets.filter(pet => pet.status === '待領養');
+                
+                const select = document.getElementById('selectPet');
+                select.innerHTML = '';
+                
+                if (availablePets.length === 0) {
+                    select.innerHTML = '<option value="">暫無可領養寵物</option>';
+                    showResult('目前沒有可領養的寵物', 'info');
+                } else {
+                    // 添加一個預設選項
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '-- 請選擇寵物 --';
+                    select.appendChild(defaultOption);
+                    
+                    // 添加所有可領養的寵物
+                    availablePets.forEach(pet => {
+                        const option = document.createElement('option');
+                        option.value = pet.id;
+                        // 顯示寵物詳細資訊
+                        const speciesIcon = getSpeciesIcon(pet.species);
+                        option.textContent = `${speciesIcon} ${pet.name} (${pet.species}, ${pet.age}歲, ${pet.breed || '未知品種'})`;
+                        select.appendChild(option);
+                    });
+                    showResult(`找到 ${availablePets.length} 隻可領養寵物`, 'info');
+                }
+                
+                document.getElementById('submitAdoptionForm').style.display = 'block';
+            } catch (error) {
+                showResult(`載入失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        async function showUpdateStatusForm() {
+            hideAllForms();
+            hideAllLists();
+            
+            try {
+                const response = await fetch(`${API_BASE}/adoptions`);
+                const adoptions = await response.json();
+                
+                const select = document.getElementById('selectAdoption');
+                select.innerHTML = '';
+                
+                if (adoptions.length === 0) {
+                    select.innerHTML = '<option value="">暫無申請資料</option>';
+                    showResult('目前沒有領養申請', 'info');
+                } else {
+                    // 添加一個預設選項
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '-- 請選擇申請 --';
+                    select.appendChild(defaultOption);
+                    
+                    // 只顯示待審核的申請（因為只能更新待審核→完成領養）
+                    const pendingAdoptions = adoptions.filter(adoption => adoption.status === '待審核');
+                    
+                    if (pendingAdoptions.length === 0) {
+                        select.innerHTML = '<option value="">暫無待審核的申請</option>';
+                        showResult('目前沒有待審核的申請', 'info');
+                    } else {
+                        pendingAdoptions.forEach(adoption => {
+                            const option = document.createElement('option');
+                            option.value = adoption.id;
+                            option.textContent = `申請#${adoption.id} - ${adoption.applicantName} (寵物ID: ${adoption.petId})`;
+                            select.appendChild(option);
+                        });
+                        showResult(`找到 ${pendingAdoptions.length} 筆待審核申請`, 'info');
+                    }
+                }
+                
+                document.getElementById('updateStatusForm').style.display = 'block';
+            } catch (error) {
+                showResult(`載入失敗: ${error.message}`, 'error');
+            }
+        }
+        
+        function hideForm(formId) {
+            document.getElementById(formId).style.display = 'none';
+        }
+        
+        function hideAllForms() {
+            const forms = ['addPetForm', 'searchPetForm', 'submitAdoptionForm', 
+                           'updateStatusForm', 'photoUploadForm', 'photoManagement'];
+            forms.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.style.display = 'none';
+            });
+        }
+        
+        function hideAllLists() {
+            document.getElementById('petsList').style.display = 'none';
+            document.getElementById('adoptionsList').style.display = 'none';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function showLoading(message) {
+            document.getElementById('result').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+        
+        function showResult(message, type = 'info', data = null) {
+            let color, icon;
+            
+            switch(type) {
+                case 'success':
+                    color = '#27ae60';
+                    icon = '✅';
+                    break;
+                case 'error':
+                    color = '#e74c3c';
+                    icon = '❌';
+                    break;
+                case 'warning':
+                    color = '#f39c12';
+                    icon = '⚠️';
+                    break;
+                default:
+                    color = '#3498db';
+                    icon = 'ℹ️';
+            }
+            
+            let content = `
+                <div style="color: ${color}; margin-bottom: 15px; font-weight: bold; font-size: 1.1rem;">
+                    ${icon} ${message}
+                </div>
+            `;
+            
+            if (data) {
+                content += `
+                    <div style="margin-top: 15px;">
+                        <details>
+                            <summary style="cursor: pointer; color: #3498db; font-weight: bold; margin-bottom: 10px;">
+                                📋 查看詳細資料
+                            </summary>
+                            <pre style="background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; margin-top: 10px; overflow: auto;">${JSON.stringify(data, null, 2)}</pre>
+                        </details>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('result').innerHTML = content;
+            document.getElementById('result').scrollTop = 0;
+        }
+        
+        function clearResults() {
+            document.getElementById('result').innerHTML = `
+                <div class="loading">
+                    <p>結果已清除</p>
+                </div>
+            `;
+        }
+        
+        function displayPetsTable(pets) {
+            const tableBody = document.getElementById('petsTableBody');
+            tableBody.innerHTML = '';
+            
+            if (pets.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px; color: #7f8c8d;">
+                            沒有找到寵物資料
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            pets.forEach(pet => {
+                const statusClass = getStatusClass(pet.status);
+                const statusText = getStatusText(pet.status);
+                const speciesIcon = getSpeciesIcon(pet.species);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${pet.id}</strong></td>
+                    <td>${pet.name}</td>
+                    <td>${speciesIcon} ${pet.species}</td>
+                    <td>${pet.breed || '-'}</td>
+                    <td>${pet.age || '-'} 歲</td>
+                    <td><span class="status-badge status-${statusClass}">${statusText}</span></td>
+                    <td class="action-buttons">
+                        <button class="btn btn-info" style="padding: 5px 10px; font-size: 0.85rem;" onclick="showEditPetForm(${pet.id})">
+                            編輯
+                        </button>
+                        <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.85rem;" onclick="deletePet(${pet.id})">
+                            刪除
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function displayAdoptionsTable(adoptions) {
+            const tableBody = document.getElementById('adoptionsTableBody');
+            tableBody.innerHTML = '';
+            
+            if (adoptions.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d;">
+                            沒有找到領養申請
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            adoptions.forEach(adoption => {
+                const statusClass = getStatusClass(adoption.status);
+                const statusText = getStatusText(adoption.status);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${adoption.id}</strong></td>
+                    <td>${adoption.applicantName}</td>
+                    <td>${adoption.petId}</td>
+                    <td><span class="status-badge status-${statusClass}">${statusText}</span></td>
+                    <td>${adoption.applyDate || '-'}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-warning" style="padding: 5px 10px; font-size: 0.85rem;" onclick="updateAdoptionStatusById(${adoption.id})">
+                            更新狀態
+                        </button>
+                        <button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.85rem;" onclick="deleteAdoption(${adoption.id})">
+                            刪除
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        async function updateAdoptionStatusById(adoptionId) {
+            if (!confirm('將此申請狀態更新為「完成領養」嗎？')) return;
+            
+            showLoading('正在更新申請狀態...');
+            try {
+                const response = await fetch(`${API_BASE}/adoptions/${adoptionId}/status?status=完成領養`, {
+                    method: 'PUT'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`✅ 申請狀態更新成功`, 'success', data);
+                    loadAllAdoptions();
+                } else {
+                    showResult(`❌ 更新失敗: ${data.message || '未知錯誤'}`, 'error', data);
+                }
+            } catch (error) {
+                showResult(`❌ 網路錯誤: ${error.message}`, 'error');
+            }
+        }
+        
+        function getSpeciesIcon(species) {
+            const icons = {
+                '狗': '🐶',
+                '貓': '🐱',
+                '兔子': '🐰',
+                '鳥': '🐦',
+                '鼠': '🐭',
+                '其他': '🐾'
+            };
+            return icons[species] || '🐾';
+        }
+        
+        function getStatusClass(status) {
+            switch(status) {
+                case '待領養': return 'available';
+                case '已領養': return 'adopted';
+                case '醫療中': return 'medical';
+                case '待審核': return 'pending';
+                case '完成領養': return 'adopted';
+                default: return 'available';
+            }
+        }
+        
+        function getStatusText(status) {
+            const map = {
+                '待領養': '🏠 待領養',
+                '已領養': '✅ 已領養',
+                '醫療中': '🏥 醫療中',
+                '待審核': '⏳ 待審核',
+                '完成領養': '✅ 完成領養'
+            };
+            return map[status] || status;
+        }
+        
+        // ========== 完整 CRUD 測試 ==========
+        async function runCompleteCRUDTest() {
+            showLoading('🚀 開始執行完整測試流程...');
+            
+            const testResults = [];
+            
+            try {
+                // 測試 1: 查詢所有寵物
+                await delay(1000);
+                showLoading('測試 1: 查詢所有寵物...');
+                
+                const petsResponse = await fetch(`${API_BASE}/pets`);
+                if (!petsResponse.ok) throw new Error('查詢寵物失敗');
+                const pets = await petsResponse.json();
+                testResults.push({ test: '查詢寵物', success: true, count: pets.length });
+                
+                // 測試 2: 新增寵物
+                await delay(1000);
+                showLoading('測試 2: 新增寵物...');
+                
+                const testPet = {
+                    name: `測試寵物_${Date.now().toString().slice(-4)}`,
+                    species: "鼠",
+                    breed: "測試品種",
+                    age: 1,
+                    gender: "公",
+                    status: "待領養",
+                    description: "完整測試用寵物"
+                };
+                
+                const createResponse = await fetch(`${API_BASE}/pets`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testPet)
+                });
+                
+                if (!createResponse.ok) throw new Error('新增寵物失敗');
+                const createdPet = await createResponse.json();
+                testResults.push({ test: '新增寵物', success: true, id: createdPet.id });
+                
+                // 測試 3: 提交領養申請
+                await delay(1000);
+                showLoading('測試 3: 提交領養申請...');
+                
+                const adoptionData = {
+                    petId: createdPet.id,
+                    applicantName: "測試申請人",
+                    contactInfo: "0910-123456",
+                    notes: "完整測試申請"
+                };
+                
+                const adoptionResponse = await fetch(`${API_BASE}/adoptions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(adoptionData)
+                });
+                
+                if (!adoptionResponse.ok) throw new Error('提交申請失敗');
+                const createdAdoption = await adoptionResponse.json();
+                testResults.push({ test: '提交申請', success: true, id: createdAdoption.id });
+                
+                // 測試 4: 更新申請狀態
+                await delay(1000);
+                showLoading('測試 4: 更新申請狀態...');
+                
+                const statusResponse = await fetch(`${API_BASE}/adoptions/${createdAdoption.id}/status?status=完成領養`, {
+                    method: 'PUT'
+                });
+                
+                if (!statusResponse.ok) throw new Error('更新申請狀態失敗');
+                testResults.push({ test: '更新申請狀態', success: true });
+                
+                // 測試 5: 清理測試資料
+                await delay(1000);
+                showLoading('測試 5: 清理測試資料...');
+                
+                const deleteAdoptionResponse = await fetch(`${API_BASE}/adoptions/${createdAdoption.id}`, {
+                    method: 'DELETE'
+                });
+                const deletePetResponse = await fetch(`${API_BASE}/pets/${createdPet.id}`, {
+                    method: 'DELETE'
+                });
+                
+                testResults.push({ 
+                    test: '清理測試資料', 
+                    success: deleteAdoptionResponse.ok && deletePetResponse.ok
+                });
+                
+                // 顯示最終結果
+                const successCount = testResults.filter(r => r.success).length;
+                const totalCount = testResults.length;
+                
+                showResult(
+                    `🎉 完整測試完成！成功: ${successCount}/${totalCount} 項測試`,
+                    successCount === totalCount ? 'success' : 'warning',
+                    { 測試結果: testResults }
+                );
+                
+            } catch (error) {
+                showResult(`❌ 測試流程失敗: ${error.message}`, 'error', { 測試進度: testResults });
+            }
+        }
+        
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>
